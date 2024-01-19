@@ -32,6 +32,6 @@
 		<input type="text" class="form-control" name="to" value="<?php echo isset( $todo->to ) ? esc_attr( $todo->to ) : ''; ?>" placeholder="To">
 	</div>
 	
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary" name="submit_action"><?php echo isset( $todo->id ) ? 'Update' : 'Submit'; ?></button>
 	<hr>
 </form>

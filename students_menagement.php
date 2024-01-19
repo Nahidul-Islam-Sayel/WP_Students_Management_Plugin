@@ -21,4 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  register_activation_hook( __FILE__, 'result_management_activate' );
  add_action( 'admin_menu', 'result_management_admin_menu' );
  add_action( 'admin_menu', 'result_management_add_menu' );
+ add_action( 'admin_menu', 'result_management_students_deshboard' );
  add_action( 'admin_enqueue_scripts', 'result_management_enqueue_scripts' );
+ add_action( 'init', 'wporg_simple_role' );
+ add_action( 'init', 'wporg_simple_role_caps', 11 );
+ add_action( 'admin_menu', 'add_settings_page' );

@@ -36,6 +36,8 @@ function result_management_admin_menu() {
 	);
 
 }
+
+
 function result_management_add_menu() {
 	add_menu_page(
 		__( 'Add Students', 'students-management' ),
@@ -46,6 +48,25 @@ function result_management_add_menu() {
 		'dashicons-admin-users',
 		3
 	);
+
+}
+function result_management_students_deshboard() {
+
+		add_menu_page(
+			__( 'Students List', 'students-management' ),
+			__( 'Students List', 'students-management' ),
+			'read_visitors',
+			'students_list',
+			'students_management_List_page',
+			'dashicons-list-view',
+			2
+		);
+
+}
+function students_management_List_page() {
+
+	$todos = simple_todo_get_todos();
+	require_once STUDENTS_MANAGEMENT_PLUGIN_DIR . 'src/students_management_table.php';
 
 }
 function students_management_add_page() {
@@ -103,7 +124,9 @@ function students_management_admin_page() {
 	if ( isset( $_POST['students-management-nonce'] ) && wp_verify_nonce( $_POST['students-management-nonce'], 'students-management-nonce-action' ) ) {
 		if ( isset( $_POST['id'] ) && $_POST['id'] != '' ) {
 			$id = intval( $_POST['id'] );
+
 			simple_todo_update_todo( $id );
+
 		} else {
 			simple_todo_insert_todo();
 		}
@@ -172,6 +195,7 @@ function simple_todo_insert_todo() {
 		)
 	);
 }
+
 function simple_todo_get_todo_by_id( $id ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'students_management';
@@ -188,4 +212,36 @@ function simple_todo_get_todos() {
 	return $items;
 }
 
+function wporg_simple_role() {
+	add_role(
+		'visitors',
+		'Visitors',
+	);
+}
 
+function wporg_simple_role_caps() {
+	$role = get_role( 'visitors' );
+	$role->add_cap( 'read_visitors', true );
+
+}
+
+function display_capabilities_info() {
+	$current_user = wp_get_current_user();
+
+	if ( current_user_can( 'read_visitors' ) ) {
+		echo '<p>User has the "read_visitors" capability.</p>';
+	} else {
+		echo '<p>User does not have the "read_visitors" capability.</p>';
+	}
+}
+
+// Hook to display the capabilities info on a settings page
+function add_settings_page() {
+	add_menu_page(
+		'Capabilities Info',
+		'Capabilities Info',
+		'read_visitors',
+		'capabilities-info',
+		'display_capabilities_info'
+	);
+}
